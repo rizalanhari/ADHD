@@ -4,26 +4,36 @@
 
 <div>
     <div class="col-xs-12">
-        <table class="table table-bordered table-hover dt-responsive">
-            <thead>
-                <tr>
-                    <th> No </th>
-                    <?php foreach ($shippingItem as $key => $value) { ?>
-                        <th> <?php echo $i ?> </th>
+        <?php
+        foreach ($data as $eachData) { ?>
+            <table class="table table-bordered table-hover dt-responsive">
+                <thead>
+                    <tr>
+                        <th> pertanyaan </th>
+                        <th> nilai </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <?php foreach ($eachData as $key => $value) { ?>
+                        <?php //dd($key, $value); 
+                        ?>
+                        <tr>
+                            <td><?php echo $key ?></td>
+                            <td><?php echo $value ?></td>
+                        </tr>
                     <?php } ?>
-                    <th> Hasil </th>
-                </tr>
-            </thead>
-            <tbody>
 
-            </tbody>
-            <tfoot>
 
-            </tfoot>
-        </table>
+                </tbody>
+                <tfoot>
+
+                </tfoot>
+            </table>
+        <?php } ?>
     </div>
 </div>
 <script>
-    $('table').DataTable();
+    var table = $('table').DataTable();
 </script>
 @endsection
