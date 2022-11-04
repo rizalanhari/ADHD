@@ -130,23 +130,21 @@ def bp_predict(X, w):
     return predict
 
 
-df = pd.read_csv("data.csv")
-X_train = df.iloc[:, :-1]
-y_train = df.iloc[:, -1]
-X_train = minmax_scale(X_train)
-y_train = onehot_enc(y_train)
+def devideData(jmlData, dataFile):
+    y = jmlData % 4
+    z = (jmlData-y)/4
+    arrDevide = [z, z, z, z]
+    for i in range(y):
+        arrDevide[i] = arrDevide[i]+1
 
-w, ep, mse = bp_fit(X_train, y_train, layer_conf=(
-    45, 4, 4), learn_rate=.1, max_epoch=2000, max_error=.1, print_per_epoch=100)
-print(f'Epochs: {ep}, MSE: {mse}')
+    df = pd.read_csv(dataFile)
+    df0 = df.loc[df['Hasil'] == 0].iloc[:int(arrDevide[0]), :]
+    df1 = df.loc[df['Hasil'] == 1].iloc[:int(arrDevide[1]), :]
+    df2 = df.loc[df['Hasil'] == 2].iloc[:int(arrDevide[2]), :]
+    df3 = df.loc[df['Hasil'] == 3].iloc[:int(arrDevide[3]), :]
+    frame = [df0, df1, df2, df3]
+    dffix = pd.DataFrame()
 
-data = [[50, 50, 50, 35, 35, 15, 35, 35, 35, 35, 35, 35, 15, 15, 35, 15, 15,
-         35, 15, 35, 35, 35, 15, 15, 50, 50, 35, 35, 35, 50, 35, 35, 35, 15,
-         15, 15, 50, 35, 50, 15, 35, 15, 15, 15, 15]]
-
-predict = bp_predict(normalisasi(data), w)
-predict = onehot_dec(predict)
-print(f'Output  : {predict}')
-
-data = con_csv("data.csv")
-print(data[50])
+    for df in frame:
+        dffix = dffix.append(df, ignore_index=True)
+    return dffix
