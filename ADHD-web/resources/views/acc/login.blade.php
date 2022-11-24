@@ -71,41 +71,40 @@
 </head>
 
 <body class="hold-transition login-page">
+    @if(session()->has('registerStatus'))
+    <div class="alert alert-success alert-dismissible fade show justify-content-center" role="alert">
+        {{session('registerStatus')}}
+    </div>
+    @endif
+    @if(session()->has('loginError'))
+    <div class="alert alert-danger alert-dismissible fade show justify-content-center" role="alert">
+        {{session('loginError')}}
+    </div>
+    @endif
     <div class="login-box">
-
         <div class="card card-outline card-primary">
             <div class="card-header text-center">
                 <a href="{{ url('/')}}" class="h1"><b>Admin</b></a>
             </div>
             <div class="card-body">
-                <p class="login-box-msg">Sign in to start your session</p>
-                <form action="{{ url('login/proses')}}" method="post">
+                <p class="login-box-msg">Sign in</p>
+                <form action="{{ url('login/')}}" method="post">
                     @csrf
                     <div class="input-group mb-3">
-                        <input autofocus type="text" class="form-control" @error('username') is-invalid @enderror placeholder="Username" name="username">
+                        <input autofocus type="email" class="form-control" placeholder="email@gmail.com" name="email" value="{{old('email')}}">
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-user"></span>
                             </div>
                         </div>
-                        @error('username')
-                        <div class="invalid-feedback">
-                            {{$message}}
-                        </div>
-                        @enderror
                     </div>
                     <div class="input-group mb-3">
-                        <input type="password" class="form-control" @error('password') is-invalid @enderror placeholder="Password" name="password">
+                        <input type="password" class="form-control" placeholder="Password" name="password">
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-lock"></span>
                             </div>
                         </div>
-                        @error('password')
-                        <div class="invalid-feedback">
-                            {{$message}}
-                        </div>
-                        @enderror
                     </div>
                     <div class="row">
                         <div class="col-12">

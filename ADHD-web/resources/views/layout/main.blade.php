@@ -35,14 +35,20 @@
                         <i class="far fa-user"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="left: inherit; right: 0px;">
+                        @auth
+                        <div class="dropdown-divider"></div>
+                        <form action="/logout" method="post">
+                            @csrf
+                            <button type="submit" class="dropdown-item">
+                                <i class="fas fa-user mr-2"></i> Logout
+                            </button>
+                        </form>
+                        @else
                         <div class="dropdown-divider"></div>
                         <a href="{{url('login')}}" class="dropdown-item">
                             <i class="fas fa-user mr-2"></i> Login
                         </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="{{url('logout')}}" class="dropdown-item">
-                            <i class="fas fa-user mr-2"></i> Logout
-                        </a>
+                        @endauth
                     </div>
                 </li>
             </ul>

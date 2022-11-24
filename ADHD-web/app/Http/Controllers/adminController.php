@@ -26,23 +26,32 @@ class adminController extends Controller
     }
     public function storepredict(Request $request)
     {
-        // dd($request);
-        $train = $request->input('train');
-        $test = $request->input('test');
-        $lrate = $request->input('lrate');
-        $neuronh = $request->input('neuronh');
-        $data = [[$train, $test, $lrate, $neuronh]];
-        // Open a file in write mode ('w')
-        $fp = fopen('predictAdmin.csv', 'w');
+        // // dd($request);
+        // $train = $request->input('train');
+        // $test = $request->input('test');
+        // $lrate = $request->input('lrate');
+        // $neuronh = $request->input('neuronh');
+        // $data = [[$train, $test, $lrate, $neuronh]];
+        // // Open a file in write mode ('w')
+        // $fp = fopen('predictAdmin.csv', 'w');
 
-        // Loop through file pointer and a line
-        foreach ($data as $row) {
-            fputcsv($fp, $row);
-        }
-        fclose($fp);
-        $result = Http::get('http://127.0.0.1:5000/predictAdmin');
-        $result = json_decode($result, true);
-        // dd($result);
-        return view('admin.result')->with('result', $result);
+        // // Loop through file pointer and a line
+        // foreach ($data as $row) {
+        //     fputcsv($fp, $row);
+        // }
+        // fclose($fp);
+        // $result = Http::get('http://127.0.0.1:5000/predictA');
+        // $result = json_decode($result, true);
+        // // dd($result);
+        // return view('admin.result')->with('result', $result);
+
+        $response = Http::get('http://127.0.0.1:5000/predictA', [
+            'train' => $request->input('train'),
+            'test' => $request->input('test'),
+            'lrate' => $request->input('lrate'),
+            'neuronh' => $request->input('neuronh'),
+        ]);
+        $response = json_decode($response, true);
+        return view('admin.result')->with('result', $response);
     }
 }

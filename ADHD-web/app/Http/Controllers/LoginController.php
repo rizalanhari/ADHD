@@ -2,50 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
-class LoginController extends Controller
+class loginController extends Controller
 {
     public function index()
     {
-        if ($user = Auth::user()) {
-            if ($user->level == '1') {
-                return redirect()->intended('/admin');
-            } else {
-                return redirect()->intended('/');
-            }
-        }
-        return view('login.main');
+        return view('acc.login');
     }
-    public function proses(Request $request)
+
+    public function authenticate(Request $request)
     {
-        $request->validate(
-            [
-                'username' => 'required',
-                'password' => 'required'
-            ],
-            [
-                'username.required' => 'Username tidak boleh kosong'
-            ]
-        );
-
-        $credetial = $request->only('username', 'password');
-        if (Auth::attempt($credetial)) {
+        $credentials = $request->validate([
+            'email' => 'required|email:dns',
+            'password' => 'required'
+        ]);
+        if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            $user = Auth::user();
-            if ($user->level == '1') {
-                return redirect()->intended('/admin');
-            } else {
-                return redirect()->intended('/');
-            }
-
-            return redirect()->intended('/');
+            return redirect()->intended('/admin');
         }
-
-        return back()->withError([
-            'username' => 'Username/Password wrong'
-        ])->onlyInput('username');
+        return back()->with('loginError', 'Login Gagal!');
     }
     public function logout(Request $request)
     {

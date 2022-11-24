@@ -30,7 +30,7 @@ def getDataQuestion():
     return question.to_json(orient='records')
 
 
-@app.route('/predictAdmin')
+@app.route('/predictA')
 def predictAdmin():
     with open('model_pkl_admin', 'rb') as f:
         pAdmin = pickle.load(f)
@@ -69,6 +69,13 @@ def predict():
     hasil = pUser(data)
     json_hasil = json.dumps({'Hasil': int(hasil[0])})
     return json_hasil
+
+
+@app.route('/with_parameters')
+def with_parameters():
+    name = request.args.get('data1')
+    age = int(request.args.get('data2'))
+    return jsonify(message="My name is " + name + " and I am " + str(age) + " years old")
 
 
 app.run(debug=True)
